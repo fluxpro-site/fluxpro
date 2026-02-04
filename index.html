@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="FluxPro - Sistema de Controle Financeiro simples e direto para o seu negócio.">
+    <title>FluxPro | Controle Financeiro Profissional</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --bg-card: rgba(30, 41, 59, 0.7);
+            --primary: #3b82f6;
+            --accent: #10b981;
+            --premium: #8b5cf6;
+            --danger: #ef4444;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --gradient-hero: linear-gradient(-45deg, #0f172a, #1e1b4b, #312e81, #0f172a);
+        }
+
+        html { scroll-behavior: smooth; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* --- LOADER --- */
+        #preloader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #0f172a; z-index: 99999;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transition: opacity 0.5s ease-out, visibility 0.5s;
+        }
+        .loader-logo-img { width: 150px; height: auto; animation: pulseLogo 1.5s infinite; }
+        .loader-bar { width: 150px; height: 3px; background: #1e293b; margin-top: 20px; border-radius: 3px; overflow: hidden; }
+        .loader-progress { width: 0%; height: 100%; background: var(--primary); animation: loadProgress 2s ease-in-out forwards; }
+        @keyframes loadProgress { 0% { width: 0%; } 100% { width: 100%; } }
+        @keyframes pulseLogo { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(0.95); opacity: 0.8; } }
+        .loaded #preloader { opacity: 0; visibility: hidden; }
+
+        /* Formas de Fundo */
+        .bg-shape { position: fixed; border-radius: 50%; filter: blur(150px); z-index: -1; opacity: 0.4; }
+        .shape-1 { top: -10%; left: -10%; width: 500px; height: 500px; background: var(--primary); animation: floatShape 20s infinite alternate; }
+        .shape-2 { bottom: 20%; right: -10%; width: 400px; height: 400px; background: var(--premium); animation: floatShape 15s infinite alternate-reverse; }
+        @keyframes floatShape { from { transform: translate(0, 0); } to { transform: translate(50px, 50px); } }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 2; }
+        .text-center { text-align: center; }
+        a { text-decoration: none; }
+
+        /* Header */
+        header {
+            padding: 15px 0; position: fixed; width: 100%; top: 0;
+            background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(20px);
+            z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .nav-flex { display: flex; justify-content: space-between; align-items: center; }
+        .header-logo-img { max-height: 150px; width: auto; display: block; }
+
+        .btn-cta-nav {
+            background: var(--text-main); color: var(--bg-dark); padding: 8px 16px; border-radius: 50px; font-weight: 700; font-size: 0.9rem; transition: 0.3s;
+        }
+        .btn-cta-nav:hover { background: var(--primary); color: white; box-shadow: 0 0 15px rgba(59, 130, 246, 0.5); }
+
+        /* Hero */
+        .hero {
+            padding: 200px 0 120px 0; background: var(--gradient-hero); background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite; text-align: center; position: relative; overflow: hidden;
+        }
+        @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        
+        .particles span { position: absolute; bottom: -50px; color: rgba(255,255,255,0.1); font-size: 2rem; animation: rise 10s infinite linear; z-index: 1; }
+        .particles span:nth-child(1){ left: 10%; animation-duration: 8s; } .particles span:nth-child(2){ left: 30%; animation-duration: 12s; font-size: 1.5rem; } .particles span:nth-child(3){ left: 70%; animation-duration: 15s; font-size: 3rem;} .particles span:nth-child(4){ left: 90%; animation-duration: 10s; }
+        @keyframes rise { 0% { bottom: -50px; transform: translateX(0); opacity: 0; } 50% { opacity: 1; } 100% { bottom: 100%; transform: translateX(100px); opacity: 0; } }
+
+        .hero h1 {
+            font-size: 3.5rem; line-height: 1.1; margin-bottom: 20px;
+            background: linear-gradient(to right, #fff, #a5b4fc, #fff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-size: 200% auto; animation: textShine 5s linear infinite reverse;
+        }
+        @keyframes textShine { to { background-position: 200% center; } }
+        .typing::after { content: '|'; animation: blink 0.7s infinite; color: var(--primary); }
+        @keyframes blink { 50% { opacity: 0; } }
+        .hero p { font-size: 1.2rem; color: var(--text-muted); max-width: 600px; margin: 0 auto 40px auto; }
+        
+        .btn-hero {
+            display: inline-block; padding: 18px 40px; background: var(--primary); color: white;
+            border-radius: 12px; font-weight: 700; font-size: 1.1rem; box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+            transition: all 0.3s; position: relative; overflow: hidden; animation: pulseBtn 2s infinite;
+        }
+        @keyframes pulseBtn { 0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(59, 130, 246, 0); } 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); } }
+        .btn-hero:hover { transform: translateY(-5px); }
+
+        .btn-outline {
+            display: inline-block; padding: 18px 40px; background: transparent; color: white; border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 12px; font-weight: 700; font-size: 1.1rem; margin-left: 10px; transition: 0.3s;
+        }
+        .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: var(--primary); color: var(--primary); }
+
+        /* Marquee */
+        .marquee { background: var(--primary); color: white; padding: 10px 0; overflow: hidden; white-space: nowrap; }
+        .marquee-content { display: inline-block; animation: marquee 20s linear infinite; }
+        .marquee-content span { margin-right: 40px; font-weight: 700; text-transform: uppercase; font-size: 0.9rem; }
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+        /* Seções */
+        section { padding: 100px 0; position: relative; }
+        .section-title { font-size: 2.5rem; margin-bottom: 10px; }
+        .section-subtitle { color: var(--text-muted); margin-bottom: 60px; font-size: 1.1rem; }
+
+        /* Glass Cards */
+        .glass-card {
+            background: var(--bg-card); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            border-radius: 24px; padding: 40px 30px; transition: 0.3s;
+        }
+        .glass-card:hover { transform: translateY(-10px); border-color: var(--primary); }
+
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .icon-box { width: 60px; height: 60px; background: rgba(59, 130, 246, 0.1); color: var(--primary); display: flex; align-items: center; justify-content: center; border-radius: 16px; font-size: 1.8rem; margin-bottom: 25px; transition: 0.3s; }
+        .glass-card:hover .icon-box { background: var(--primary); color: white; box-shadow: 0 0 20px var(--primary); }
+        .feature-card h3 { margin-bottom: 15px; font-size: 1.3rem; } .feature-card p { color: var(--text-muted); }
+
+        /* Stats */
+        .stats { background: rgba(0,0,0,0.2); padding: 60px 0; }
+        .stat-item h4 { font-size: 3rem; font-weight: 800; color: var(--primary); margin-bottom: 5px; }
+        .stat-item p { color: var(--text-muted); font-weight: 600; text-transform: uppercase; }
+
+        /* Timeline */
+        .timeline-item { display: flex; gap: 20px; margin-bottom: 40px; position: relative; }
+        .timeline-item:not(:last-child)::before { content: ''; position: absolute; left: 25px; top: 50px; width: 2px; height: calc(100% - 20px); background: rgba(255,255,255,0.1); z-index: 0; }
+        .timeline-number { width: 50px; height: 50px; flex-shrink: 0; background: var(--primary); color: white; font-weight: 800; font-size: 1.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 1; box-shadow: 0 0 0 5px rgba(59, 130, 246, 0.2); }
+        .timeline-content h3 { margin-bottom: 10px; } .timeline-content p { color: var(--text-muted); }
+
+        /* --- PRICING --- */
+        .pricing { padding: 80px 0; background: #0b1120; }
+        
+        .scarcity-timer {
+            background: linear-gradient(45deg, #ef4444, #b91c1c); color: white;
+            display: inline-block; padding: 15px 40px; border-radius: 12px;
+            font-weight: 800; font-size: 1.3rem; text-transform: uppercase;
+            box-shadow: 0 0 30px rgba(239, 68, 68, 0.5); margin-bottom: 50px;
+            animation: pulseOffer 1.5s infinite; border: 2px solid rgba(255,255,255,0.2);
+        }
+        @keyframes pulseOffer {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(239, 68, 68, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+
+        .tilt-card { transform-style: preserve-3d; transform: perspective(1000px); }
+        .tilt-content { transform: translateZ(20px); }
+
+        .plan-card { position: relative; display: flex; flex-direction: column; }
+        
+        /* CORREÇÃO DO CARD MAIS ESCOLHIDO */
+        .plan-card.featured { 
+            background: linear-gradient(145deg, rgba(59, 130, 246, 0.2), rgba(30, 41, 59, 0.8)); 
+            border: 2px solid var(--primary); 
+            transform: scale(1.05); 
+            z-index: 2; 
+            margin-top: 20px; /* Garante espaço para o badge */
+        }
+        
+        /* CORREÇÃO DO BADGE */
+        .badge { 
+            position: absolute; 
+            top: -22px; /* Sobe o badge para fora do card */
+            left: 50%; 
+            transform: translateX(-50%); 
+            background: var(--primary); 
+            color: white; 
+            padding: 8px 20px; /* Badge mais gordinho */
+            border-radius: 50px; 
+            font-size: 0.85rem; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            white-space: nowrap;
+        }
+        
+        /* Espaço extra no título do card destacado */
+        .plan-card.featured h3 {
+            margin-top: 15px; /* Empurra o texto para baixo */
+        }
+
+        .old-price { display: block; font-size: 1rem; color: #ef4444; font-weight: 600; text-decoration: line-through; margin-bottom: -5px; opacity: 0.8; }
+        .price { font-size: 3.2rem; font-weight: 800; margin: 15px 0 25px 0; color: white; line-height: 1; letter-spacing: -1px; }
+        .price .cents { font-size: 0.5em; vertical-align: super; font-weight: 700; }
+        .price span.period { font-size: 1rem; color: var(--text-muted); font-weight: 400; vertical-align: baseline; }
+        
+        .details { color: var(--text-muted); margin-bottom: 30px; }
+        .features-list { list-style: none; margin-bottom: 30px; flex: 1; }
+        .features-list li { margin-bottom: 15px; display: flex; align-items: center; gap: 10px; color: #cbd5e1; }
+        .features-list li i { color: var(--accent); }
+        .features-list li.disabled { color: #475569; text-decoration: line-through; opacity: 0.7; }
+        .btn-plan { width: 100%; padding: 18px; border-radius: 12px; font-weight: 700; text-align: center; border: 1px solid rgba(255,255,255,0.1); color: white; transition: 0.3s; }
+        .btn-plan:hover { background: rgba(255,255,255,0.1); }
+        .btn-plan.primary { background: var(--primary); border: none; } .btn-plan.primary:hover { background: #2563eb; box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4); }
+        .btn-plan.premium { background: var(--premium); border: none; } .btn-plan.premium:hover { background: #7c3aed; box-shadow: 0 5px 15px rgba(124, 58, 237, 0.4); }
+
+        /* Tabela, FAQ, Footer */
+        .comparison-table { width: 100%; border-collapse: collapse; margin-top: 30px; text-align: center; }
+        .comparison-table th, .comparison-table td { padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .comparison-table th { background: rgba(255,255,255,0.05); color: var(--text-main); }
+        .comparison-table td:first-child { text-align: left; font-weight: 600; color: var(--text-muted); }
+        .comp-fluxpro { background: rgba(59, 130, 246, 0.1); color: var(--primary); font-weight: 800; }
+        .fa-check-circle { color: var(--accent); } .fa-times-circle { color: var(--danger); opacity: 0.5; }
+
+        .faq-item { margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .faq-item summary { padding: 20px; cursor: pointer; font-weight: 700; display: flex; justify-content: space-between; align-items: center; list-style: none; }
+        .faq-item summary::-webkit-details-marker { display: none; }
+        .faq-item summary::after { content: '+'; font-size: 1.5rem; color: var(--primary); transition: 0.3s; }
+        .faq-item[open] summary::after { transform: rotate(45deg); }
+        .faq-item p { padding: 0 20px 20px 20px; color: var(--text-muted); }
+
+        .rules { padding: 60px 0 100px 0; }
+        .rules-box { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 40px; border-radius: 20px; }
+        .rules-list { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .rule-item { display: flex; gap: 10px; align-items: flex-start; font-size: 0.95rem; color: var(--text-muted); }
+        .rule-item i { color: var(--primary); margin-top: 5px; }
+
+        .wave-divider { position: absolute; bottom: 0; left: 0; width: 100%; overflow: hidden; line-height: 0; transform: rotate(180deg); }
+        .wave-divider svg { position: relative; display: block; width: calc(136% + 1.3px); height: 100px; }
+        .wave-divider .shape-fill { fill: #0b1120; }
+        
+        footer { background: #0b1120; padding: 40px 0; text-align: center; color: var(--text-muted); }
+        .footer-logo-img { max-width: 250px; height: auto; display: block; margin: 0 auto 20px auto; }
+
+        .whatsapp-float { position: fixed; bottom: 30px; right: 30px; background: #25D366; color: white; width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; box-shadow: 0 10px 20px rgba(37, 211, 102, 0.3); z-index: 2000; transition: transform 0.3s; animation: pulseBtn 2s infinite; }
+        .whatsapp-float:hover { transform: scale(1.1); }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .grid-3, .rules-list, .stats .grid-3 { grid-template-columns: 1fr; }
+            .plan-card.featured { transform: scale(1); margin: 30px 0; } /* Mais margem no mobile */
+            .btn-hero, .btn-outline { width: 100%; margin: 0 0 15px 0; display: block; }
+            .timeline-item { flex-direction: column; gap: 10px; }
+            .timeline-item:not(:last-child)::before { left: 25px; top: 50px; height: calc(100% + 10px); }
+            .stat-item { margin-bottom: 30px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="preloader">
+        <img src="logo.png" alt="Carregando FluxPro" class="loader-logo-img">
+        <div class="loader-bar"><div class="loader-progress"></div></div>
+    </div>
+
+    <div class="bg-shape shape-1"></div>
+    <div class="bg-shape shape-2"></div>
+
+    <header>
+        <div class="container nav-flex">
+            <a href="#"><img src="logo.png" alt="FluxPro Logo" class="header-logo-img"></a>
+            
+            <a href="https://wa.me/5538992614167?text=Olá, vim pelo site e estou interessado no FluxPro" class="btn-cta-nav">
+                <i class="fab fa-whatsapp"></i> Falar no Zap
+            </a>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="particles"><span>💲</span><span>📈</span><span>🚀</span><span>✂️</span></div>
+        <div class="container">
+            <h1>O Controle Financeiro<br><span class="typing" id="typing-text"></span></h1>
+            <p>Esqueça o caderninho. Organize seu caixa, veja seu lucro em tempo real e feche o dia com tranquilidade. Simples, direto e sem mensalidade.</p>
+            
+            <div>
+                <a href="https://fluxpro-site.github.io/modoteste/" target="_blank" class="btn-hero">
+                    <i class="fas fa-play"></i> Testar Agora (Visualização)
+                </a>
+                <a href="#pricing" class="btn-outline">Ver Planos</a>
+            </div>
+        </div>
+    </section>
+
+    <div class="marquee">
+        <div class="marquee-content">
+            <span><i class="fas fa-check"></i> Sem Mensalidade</span>
+            <span><i class="fas fa-check"></i> 100% no Celular</span>
+            <span><i class="fas fa-check"></i> Pagamento Único</span>
+            <span><i class="fas fa-check"></i> Suporte Garantido</span>
+            <span><i class="fas fa-check"></i> Fácil de Usar</span>
+            <span><i class="fas fa-check"></i> Sem Mensalidade</span>
+            <span><i class="fas fa-check"></i> 100% no Celular</span>
+            <span><i class="fas fa-check"></i> Pagamento Único</span>
+        </div>
+    </div>
+
+    <section class="features">
+        <div class="container">
+            <div class="text-center">
+                <h2 class="section-title">Por que usar o FluxPro?</h2>
+                <p class="section-subtitle">Tudo o que você precisa para sair do amadorismo financeiro.</p>
+            </div>
+            
+            <div class="grid-3">
+                <div class="glass-card feature-card">
+                    <div class="icon-box"><i class="fas fa-mobile-alt"></i></div>
+                    <h3>100% no Celular</h3>
+                    <p>Funciona como um aplicativo. Você lança as vendas na hora, de onde estiver, sem precisar de computador.</p>
+                </div>
+                <div class="glass-card feature-card">
+                    <div class="icon-box"><i class="fas fa-chart-line"></i></div>
+                    <h3>Lucro Real</h3>
+                    <p>Saiba exatamente quanto entrou, quanto saiu e quanto sobrou no fim do dia.</p>
+                </div>
+                <div class="glass-card feature-card">
+                    <div class="icon-box"><i class="fas fa-hand-holding-usd"></i></div>
+                    <h3>Sem Mensalidade</h3>
+                    <p>Pagamento único. Você compra o sistema e ele é seu. Sem surpresas no cartão.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats" id="stats-section">
+        <div class="container">
+            <div class="grid-3 text-center">
+                <div class="stat-item">
+                    <h4 data-target="150">+0</h4>
+                    <p>Sistemas Entregues</p>
+                </div>
+                <div class="stat-item">
+                    <h4 data-target="98">0%</h4>
+                    <p>Aprovação</p>
+                </div>
+                <div class="stat-item">
+                    <h4 data-target="0">0</h4>
+                    <p>Mensalidade</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <div class="text-center">
+                <h2 class="section-title">Como Funciona?</h2>
+                <p class="section-subtitle">Simples em 3 passos.</p>
+            </div>
+            <div style="max-width: 700px; margin: 50px auto 0;">
+                <div class="timeline-item">
+                    <div class="timeline-number">1</div>
+                    <div class="timeline-content">
+                        <h3>Escolha e Pague</h3>
+                        <p>Selecione o melhor plano para você e faça o pagamento único via WhatsApp.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-number">2</div>
+                    <div class="timeline-content">
+                        <h3>Receba o Link</h3>
+                        <p>Em poucos dias, você recebe seu link exclusivo já configurado para usar.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-number">3</div>
+                    <div class="timeline-content">
+                        <h3>Comece a Usar</h3>
+                        <p>Salve o atalho no celular e comece a organizar suas finanças imediatamente.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="pricing" class="pricing">
+        <div class="container">
+            <div class="text-center">
+                <div class="scarcity-timer">
+                    <i class="fas fa-fire"></i> Oferta Encerra em: <span id="countdown">04:59:00</span>
+                </div>
+
+                <h2 class="section-title">Escolha seu Plano</h2>
+                <p class="section-subtitle">Investimento único. Garantia de organização.</p>
+            </div>
+
+            <div class="grid-3">
+                <div class="glass-card plan-card tilt-card" onmousemove="tilt(event, this)" onmouseleave="resetTilt(this)">
+                    <div class="tilt-content">
+                        <h3>Essencial</h3>
+                        <span class="old-price">De R$ 199,90</span>
+                        <div class="price">R$ 149<span class="cents">,90</span> <span class="period">/único</span></div>
+                        <p class="details">Para quem quer sair do papel hoje mesmo.</p>
+                        <ul class="features-list">
+                            <li><i class="fas fa-check"></i> Sistema FluxPro Padrão</li>
+                            <li><i class="fas fa-check"></i> Entradas e Saídas</li>
+                            <li><i class="fas fa-check"></i> Fechamento Diário</li>
+                            <li><i class="fas fa-check"></i> 7 Dias de Garantia</li>
+                            <li class="disabled"><i class="fas fa-times"></i> Personalização de Cores</li>
+                            <li class="disabled"><i class="fas fa-times"></i> Instalação Guiada</li>
+                        </ul>
+                        <a href="https://wa.me/5538992614167?text=Olá, vim pelo site e estou interessado no FluxPro Essencial" class="btn-plan">Comprar Essencial</a>
+                    </div>
+                </div>
+
+                <div class="glass-card plan-card featured tilt-card" onmousemove="tilt(event, this)" onmouseleave="resetTilt(this)">
+                    <div class="tilt-content">
+                        <div class="badge">Mais Escolhido</div>
+                        <h3>Profissional</h3>
+                        <span class="old-price">De R$ 299,90</span>
+                        <div class="price">R$ 219<span class="cents">,90</span> <span class="period">/único</span></div>
+                        <p class="details">O melhor custo-benefício para seu negócio.</p>
+                        <ul class="features-list">
+                            <li><i class="fas fa-check"></i> <strong>Tudo do Essencial</strong></li>
+                            <li><i class="fas fa-check"></i> Personalização (Nome e Cores)</li>
+                            <li><i class="fas fa-check"></i> Instalação Guiada (Atalho App)</li>
+                            <li><i class="fas fa-check"></i> Testes antes da entrega</li>
+                            <li><i class="fas fa-check"></i> <strong>30 Dias de Garantia</strong></li>
+                            <li><i class="fas fa-check"></i> Suporte Prioritário</li>
+                        </ul>
+                        <a href="https://wa.me/5538992614167?text=Olá, vim pelo site e estou interessado no FluxPro Profissional" class="btn-plan primary">Comprar Profissional</a>
+                    </div>
+                </div>
+
+                <div class="glass-card plan-card tilt-card" onmousemove="tilt(event, this)" onmouseleave="resetTilt(this)">
+                    <div class="tilt-content">
+                        <h3>Premium</h3>
+                        <span class="old-price">De R$ 450,90</span>
+                        <div class="price">R$ 299<span class="cents">,90</span> <span class="period">/único</span></div>
+                        <p class="details">Exclusividade e adaptação total.</p>
+                        <ul class="features-list">
+                            <li><i class="fas fa-check"></i> <strong>Tudo do Profissional</strong></li>
+                            <li><i class="fas fa-check"></i> Visual Avançado Exclusivo</li>
+                            <li><i class="fas fa-check"></i> Modelo Adaptado ao Negócio</li>
+                            <li><i class="fas fa-check"></i> Entrega Relâmpago (Prioridade)</li>
+                            <li><i class="fas fa-check"></i> Avaliação de Funções Extras</li>
+                        </ul>
+                        <a href="https://wa.me/5538992614167?text=Olá, vim pelo site e estou interessado no FluxPro Premium" class="btn-plan premium">Comprar Premium</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <div class="text-center">
+                <h2 class="section-title">O fim do Caderninho</h2>
+                <p class="section-subtitle">Veja a diferença.</p>
+            </div>
+            <div class="glass-card" style="overflow-x: auto;">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Recurso</th>
+                            <th>Caderno / Planilha</th>
+                            <th class="comp-fluxpro">FluxPro System</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Cálculo Automático</td>
+                            <td><i class="fas fa-times-circle"></i> Não (Manual)</td>
+                            <td><i class="fas fa-check-circle"></i> Sim (Instantâneo)</td>
+                        </tr>
+                        <tr>
+                            <td>Fácil no Celular</td>
+                            <td><i class="fas fa-times-circle"></i> Ruim</td>
+                            <td><i class="fas fa-check-circle"></i> Perfeito</td>
+                        </tr>
+                        <tr>
+                            <td>Relatório de Lucro</td>
+                            <td><i class="fas fa-times-circle"></i> Difícil de fazer</td>
+                            <td><i class="fas fa-check-circle"></i> Em 1 clique</td>
+                        </tr>
+                        <tr>
+                            <td>Visual Profissional</td>
+                            <td><i class="fas fa-times-circle"></i> Não</td>
+                            <td><i class="fas fa-check-circle"></i> Sim</td>
+                        </tr>
+                        <tr>
+                            <td>Risco de Perder/Rasgar</td>
+                            <td><i class="fas fa-times-circle"></i> Alto</td>
+                            <td><i class="fas fa-check-circle"></i> Zero (Backup)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <section style="background: #0b1120;">
+        <div class="container" style="max-width: 800px;">
+            <div class="text-center">
+                <h2 class="section-title">Dúvidas Frequentes</h2>
+                <p class="section-subtitle">Respostas rápidas.</p>
+            </div>
+            <div class="glass-card" style="padding: 20px;">
+                <details class="faq-item">
+                    <summary>Preciso pagar mensalidade?</summary>
+                    <p>Não! O pagamento é único. O sistema é seu para sempre.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Funciona em iPhone e Android?</summary>
+                    <p>Sim, funciona em qualquer celular com navegador de internet (Chrome, Safari, etc).</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Preciso instalar algo?</summary>
+                    <p>Não. É um sistema web. Nós te ensinamos a criar um ícone na tela inicial que funciona igual a um aplicativo.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>E se eu trocar de celular?</summary>
+                    <p>Basta acessar seu link no celular novo e restaurar o backup dos seus dados.</p>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <section class="rules" style="position: relative;">
+        <div class="container">
+            <div class="rules-box glass-card">
+                <h3 style="margin-bottom: 20px; color:white;">📌 Regras e Transparência</h3>
+                <div class="rules-list">
+                    <div class="rule-item"><i class="fas fa-info-circle"></i> <span>Sistema padronizado com ajustes conforme o pacote.</span></div>
+                    <div class="rule-item"><i class="fas fa-tools"></i> <span>Novas funcionalidades complexas são cobradas à parte.</span></div>
+                    <div class="rule-item"><i class="fas fa-shield-alt"></i> <span>Prazo de garantia válido apenas para correções técnicas.</span></div>
+                    <div class="rule-item"><i class="fas fa-truck"></i> <span>Entrega de 2 a 5 dias úteis após pagamento.</span></div>
+                    <div class="rule-item"><i class="fas fa-link"></i> <span>Entrega via Link próprio (Web App).</span></div>
+                    <div class="rule-item"><i class="fas fa-user-clock"></i> <span>Suporte em horário comercial razoável.</span></div>
+                </div>
+            </div>
+        </div>
+        <div class="wave-divider">
+            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+            </svg>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <img src="logo.png" alt="FluxPro Logo Footer" class="footer-logo-img">
+            
+            <p>&copy; 2026 Todos os direitos reservados.</p>
+            <p style="margin-top:15px; font-size:0.8rem; opacity:0.6;">Este sistema é uma ferramenta de organização e não constitui consultoria financeira ou contábil.</p>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/5538992614167?text=Olá, vim pelo site e estou interessado no FluxPro" class="whatsapp-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script>
+        // REMOVE LOADER (#7)
+        window.addEventListener('load', () => {
+            document.body.classList.add('loaded');
+        });
+
+        // Typing Effect
+        const text = "que cabe no seu bolso.";
+        let index = 0;
+        let isDeleting = false;
+        const speed = 100;
+        
+        function typeWriter() {
+            const target = document.getElementById("typing-text");
+            if (isDeleting) {
+                target.innerHTML = text.substring(0, index--);
+                if (index < 0) { isDeleting = false; setTimeout(typeWriter, 500); return; }
+            } else {
+                target.innerHTML = text.substring(0, index++);
+                if (index > text.length) { isDeleting = true; setTimeout(typeWriter, 2000); return; }
+            }
+            setTimeout(typeWriter, isDeleting ? speed / 2 : speed);
+        }
+        typeWriter();
+
+        // Stats Counter
+        const statsSection = document.querySelector('#stats-section');
+        const counters = document.querySelectorAll('.stat-item h4');
+        let started = false;
+
+        function startCounting() {
+            counters.forEach(counter => {
+                const target = +counter.getAttribute('data-target');
+                const count = +counter.innerText.replace('+', '').replace('%', '');
+                const increment = target / 100;
+                if (count < target) {
+                    counter.innerText = Math.ceil(count + increment) + (counter.innerText.includes('%') ? '%' : (counter.innerText.includes('+') ? '+' : ''));
+                    setTimeout(startCounting, 20);
+                } else {
+                    counter.innerText = target + (counter.getAttribute('data-target') === '98' ? '%' : (counter.getAttribute('data-target') === '150' ? '+' : ''));
+                }
+            });
+        }
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting && !started) {
+                startCounting();
+                started = true;
+            }
+        });
+        observer.observe(statsSection);
+
+        // TIMER (#11)
+        function updateTimer() {
+            const now = new Date();
+            const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
+            const diff = endOfDay - now;
+            
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById("countdown").innerHTML = 
+                (hours < 10 ? "0" + hours : hours) + "h " + 
+                (minutes < 10 ? "0" + minutes : minutes) + "m " + 
+                (seconds < 10 ? "0" + seconds : seconds) + "s";
+        }
+        setInterval(updateTimer, 1000);
+
+        // TILT EFFECT (#1)
+        function tilt(e, card) {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const rotateX = ((y - centerY) / centerY) * -10;
+            const rotateY = ((x - centerX) / centerX) * 10;
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+        }
+
+        function resetTilt(card) {
+            card.style.transform = `perspective(1000px) rotateX(0) rotateY(0) scale(1)`;
+        }
+
+    </script>
+</body>
+</html>
