@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedido Confirmado | FluxPro</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0; padding: 0;
+            background-color: #0f172a; /* Fundo igual ao do site principal */
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: white;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+
+        .card {
+            background: rgba(30, 41, 59, 0.7);
+            padding: 50px 30px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+            max-width: 600px;
+            width: 90%;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .icon-check {
+            font-size: 5rem; color: #10b981; margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        h1 { margin-bottom: 10px; font-size: 2rem; color: #f8fafc; }
+        p { color: #94a3b8; margin-bottom: 40px; font-size: 1.1rem; }
+
+        /* Botão Pulsante */
+        .btn-form {
+            background: #3b82f6; color: white; text-decoration: none;
+            padding: 20px 40px; border-radius: 50px; font-weight: 800; font-size: 1.2rem;
+            display: inline-block; transition: 0.3s;
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
+            animation: pulse 2s infinite;
+        }
+        .btn-form:hover { transform: scale(1.05); background: #2563eb; }
+
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-20px);} 60% {transform: translateY(-10px);} }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); } 70% { box-shadow: 0 0 0 20px rgba(59, 130, 246, 0); } 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); } }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div class="icon-check"><i class="fas fa-check-circle"></i></div>
+        
+        <h1>Pagamento Recebido!</h1>
+        <p>Você fez a escolha certa. Agora, precisamos dos seus dados para criar sua versão personalizada do FluxPro.</p>
+        
+        <p style="color: white; font-weight: 600; margin-top: -20px;">Clique abaixo para enviar o Nome da Loja e sua Logo:</p>
+
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLScanQEfvpKNAsii2e-Gj_PpNefN-6UKlyh1tGqxHzpvZqFRsQ/viewform?usp=header" target="_blank" class="btn-form">
+            ENVIAR DADOS AGORA <i class="fas fa-arrow-right"></i>
+        </a>
+        
+        <p style="margin-top: 30px; font-size: 0.85rem; opacity: 0.7;">
+            Link seguro do Google Forms.<br>
+            Após o envio, o prazo de entrega é de 3 a 7 dias úteis.
+        </p>
+    </div>
+
+</body>
+</html>
