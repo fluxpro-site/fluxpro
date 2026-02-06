@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acesso Liberado | FluxPro</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0; padding: 0;
+            background-color: #0f172a; /* Fundo padrão do site */
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: white;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+
+        .card {
+            background: rgba(30, 41, 59, 0.7);
+            padding: 40px 30px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .icon-lock {
+            font-size: 4rem; color: #3b82f6; margin-bottom: 20px;
+            animation: pulseIcon 2s infinite;
+        }
+
+        h1 { margin-bottom: 15px; font-size: 1.8rem; color: #f8fafc; }
+        p { color: #94a3b8; margin-bottom: 20px; font-size: 1rem; line-height: 1.5; }
+
+        .warning-box {
+            background: rgba(16, 185, 129, 0.1); 
+            border: 1px solid #10b981; 
+            color: #10b981;
+            padding: 15px; 
+            border-radius: 10px; 
+            margin-bottom: 30px; 
+            text-align: left;
+            font-size: 0.95rem;
+        }
+        .warning-box strong { display: block; margin-bottom: 5px; color: white; font-size: 1rem;}
+
+        /* Botão */
+        .btn-access {
+            background: #3b82f6; color: white; text-decoration: none;
+            padding: 18px 30px; border-radius: 50px; font-weight: 800; font-size: 1.1rem;
+            display: block; transition: 0.3s;
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
+            margin-bottom: 20px;
+        }
+        .btn-access:hover { transform: translateY(-3px); background: #2563eb; }
+
+        @keyframes pulseIcon { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div class="icon-lock"><i class="fas fa-unlock-alt"></i></div>
+        
+        <h1>Parabéns, acesso garantido!</h1>
+        <p>Sua licença do FluxPro Essencial está ativa. Agora vamos configurar seu acesso seguro.</p>
+        
+        <div class="warning-box">
+            <i class="fas fa-shield-alt"></i> <strong>LEIA COM ATENÇÃO:</strong><br>
+            Para sua segurança, <b>sua senha é gerada manualmente</b> pelo nosso suporte.<br><br>
+            Fique atento! Dentro de instantes enviaremos sua Senha no seu <b>WhatsApp</b> OU no seu <b>E-mail</b>.
+        </div>
+
+        <p style="color: white; font-weight: 600; margin-bottom: 10px;">Enquanto a senha chega, já acesse o sistema:</p>
+
+        <a href="https://fluxpro-site.github.io/appfluxpro/" target="_blank" class="btn-access">
+            ENTRAR NO FLUXPRO AGORA <i class="fas fa-external-link-alt"></i>
+        </a>
+        
+        <p style="font-size: 0.8rem; opacity: 0.6;">
+            Dica: Ao abrir, clique nos 3 pontinhos do navegador e escolha "Adicionar à Tela Inicial".
+        </p>
+    </div>
+
+</body>
+</html>
